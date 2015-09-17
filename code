@@ -1,0 +1,563 @@
+Public Class frmInventory
+    Private arrIDNums(50) As String
+    Private wc As Integer = 0
+    Private path As String = "H:\inventory.txt"
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        Dim item As String = lstProducts.SelectedItem
+        Dim i As Integer
+        Dim current As Integer
+
+        For i = 1 To wc
+            If item = arrIDNums(i) Then
+                current = i
+                Exit For
+            End If
+        Next i
+
+        For i = current To wc - 1
+            arrIDNums(i) = arrIDNums(current + 1)
+        Next
+
+        wc = wc - 1
+        lstProducts.Items.Clear()
+        For i = 1 To wc
+            lstProducts.Items.Add(arrIDNums(i))
+        Next
+    End Sub
+
+    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
+        Me.Close()
+    End Sub
+
+    Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        Dim IDNum As String
+        'Type
+        If rBtnTraditional.Checked = True Then
+            IDNum = "T"
+        ElseIf rBtnMessenger.Checked = True Then
+            IDNum = "M"
+        Else
+            IDNum = "S"
+        End If
+        'Size
+        If rBtnSmall.Checked = True Then
+            IDNum += "S"
+        ElseIf rBtnMedium.Checked = True Then
+            IDNum += "M"
+        Else
+            IDNum += "L"
+        End If
+        'Color
+        If rBtnWhite.Checked = True Then
+            IDNum += "W"
+        ElseIf rBtnRed.Checked = True Then
+            IDNum += "R"
+        ElseIf rBtnBlack.Checked = True Then
+            IDNum += "B"
+        ElseIf rBtnBlue.Checked = True Then
+            IDNum += "L"
+        ElseIf rBtnGray.Checked = True Then
+            IDNum += "G"
+        ElseIf rBtnGreen.Checked = True Then
+            IDNum += "N"
+        End If
+        'Pattern
+        If rBtnStriped.Checked = True Then
+            IDNum += "S"
+        ElseIf rBtnPolka.Checked = True Then
+            IDNum += "P"
+        Else
+            IDNum += "C"
+        End If
+        'Features
+        If ckBoxInitials.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxBottle.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxStraps.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxLunchbox.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxHeadphone.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxCell.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxHandle.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxWheels.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        'Store
+        IDNum += UCase(Mid(cBoxStores.SelectedItem, 1, 2))
+        'Brand
+        IDNum += UCase(Mid(cBoxDesigner.SelectedItem, 1, 2))
+        'State
+        If cBoxStates.SelectedItem <> "Missouri" And cBoxStates.SelectedItem <> "North Dakota" And cBoxStates.SelectedItem <> "South Dakota" Then
+            IDNum += UCase(Mid(cBoxStates.SelectedItem, 1, 4))
+        ElseIf cBoxStates.SelectedItem = "Missouri" Then
+            IDNum += "MISO"
+        ElseIf cBoxStates.SelectedItem = "South Dakota" Then
+            IDNum += "SOUD"
+        Else
+            IDNum += "NORD"
+        End If
+        'Add to list box
+        lstProducts.Items.Add(IDNum)
+
+        wc += 1
+        arrIDNums(wc) = IDNum
+    End Sub
+
+    Private Sub lstProducts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstProducts.SelectedIndexChanged
+        Dim item As String = lstProducts.SelectedItem
+
+        'Type
+        If Mid(item, 1, 1) = "T" Then
+            rBtnTraditional.Checked = True
+        ElseIf Mid(item, 1, 1) = "M" Then
+            rBtnMessenger.Checked = True
+        Else
+            rBtnShoulder.Checked = True
+        End If
+        'Size
+        If Mid(item, 2, 1) = "S" Then
+            rBtnSmall.Checked = True
+        ElseIf Mid(item, 2, 1) = "M" Then
+            rBtnMedium.Checked = True
+        Else
+            rBtnLarge.Checked = True
+        End If
+        'Color
+        If Mid(item, 3, 1) = "W" Then
+            rBtnWhite.Checked = True
+        ElseIf Mid(item, 3, 1) = "R" Then
+            rBtnRed.Checked = True
+        ElseIf Mid(item, 3, 1) = "B" Then
+            rBtnBlack.Checked = True
+        ElseIf Mid(item, 3, 1) = "L" Then
+            rBtnBlue.Checked = True
+        ElseIf Mid(item, 3, 1) = "G" Then
+            rBtnGray.Checked = True
+        ElseIf Mid(item, 3, 1) = "N" Then
+            rBtnGreen.Checked = True
+        End If
+        'Pattern
+        If Mid(item, 4, 1) = "S" Then
+            rBtnStriped.Checked = True
+        ElseIf Mid(item, 4, 1) = "P" Then
+            rBtnPolka.Checked = True
+        Else
+            rBtnCustomized.Checked = True
+        End If
+        'Features
+        If Mid(item, 5, 1) = "C" Then
+            ckBoxInitials.Checked = True
+        Else
+            ckBoxInitials.Checked = False
+        End If
+        If Mid(item, 6, 1) = "C" Then
+            ckBoxBottle.Checked = True
+        Else
+            ckBoxBottle.Checked = False
+        End If
+        If Mid(item, 7, 1) = "C" Then
+            ckBoxStraps.Checked = True
+        Else
+            ckBoxStraps.Checked = False
+        End If
+        If Mid(item, 8, 1) = "C" Then
+            ckBoxLunchbox.Checked = True
+        Else
+            ckBoxLunchbox.Checked = False
+        End If
+        If Mid(item, 9, 1) = "C" Then
+            ckBoxHeadphone.Checked = True
+        Else
+            ckBoxHeadphone.Checked = False
+        End If
+        If Mid(item, 10, 1) = "C" Then
+            ckBoxCell.Checked = True
+        Else
+            ckBoxCell.Checked = False
+        End If
+        If Mid(item, 11, 1) = "C" Then
+            ckBoxHandle.Checked = True
+        Else
+            ckBoxHandle.Checked = False
+        End If
+        If Mid(item, 12, 1) = "C" Then
+            ckBoxWheels.Checked = True
+        Else
+            ckBoxWheels.Checked = False
+        End If
+        'Store
+        If Mid(item, 13, 2) = "CH" Then
+            cBoxStores.Text = "Charming Charlie's"
+        ElseIf Mid(item, 13, 2) = "CL" Then
+            cBoxStores.Text = "Claire's"
+        ElseIf Mid(item, 13, 2) = "JC" Then
+            cBoxStores.Text = "JCPenny"
+        ElseIf Mid(item, 13, 2) = "KO" Then
+            cBoxStores.Text = "Kohls"
+        ElseIf Mid(item, 13, 2) = "MA" Then
+            cBoxStores.Text = "Macy's"
+        ElseIf Mid(item, 13, 2) = "OF" Then
+            cBoxStores.Text = "Office Depot"
+        ElseIf Mid(item, 13, 2) = "SE" Then
+            cBoxStores.Text = "Sears"
+        Else
+            cBoxStores.Text = "Target"
+        End If
+        'Brand
+        If Mid(item, 15, 2) = "CO" Then
+            cBoxDesigner.Text = "Columbia Sportswear"
+        ElseIf Mid(item, 15, 2) = "DE" Then
+            cBoxDesigner.Text = "Deuter Sport"
+        ElseIf Mid(item, 15, 2) = "JA" Then
+            cBoxDesigner.Text = "JanSport"
+        ElseIf Mid(item, 15, 2) = "LL" Then
+            cBoxDesigner.Text = "LL Bean"
+        ElseIf Mid(item, 15, 2) = "MA" Then
+            cBoxDesigner.Text = "Marmot"
+        ElseIf Mid(item, 15, 2) = "NI" Then
+            cBoxDesigner.Text = "Nike"
+        ElseIf Mid(item, 15, 2) = "NO" Then
+            cBoxDesigner.Text = "North Face, The"
+        ElseIf Mid(item, 15, 2) = "OS" Then
+            cBoxDesigner.Text = "Osprey Packs"
+        ElseIf Mid(item, 15, 2) = "WE" Then
+            cBoxDesigner.Text = "Wenger Swiss Gear"
+        End If
+        'State
+        If Mid(item, 17, 4) = "ALAB" Then
+            cBoxStates.Text = "Alabama"
+        ElseIf Mid(item, 17, 4) = "ALAS" Then
+            cBoxStates.Text = "Alaska"
+        ElseIf Mid(item, 17, 4) = "ARIZ" Then
+            cBoxStates.Text = "Arizona"
+        ElseIf Mid(item, 17, 4) = "ARKA" Then
+            cBoxStates.Text = "Arkansas"
+        ElseIf Mid(item, 17, 4) = "CALI" Then
+            cBoxStates.Text = "California"
+        ElseIf Mid(item, 17, 4) = "COLO" Then
+            cBoxStates.Text = "Colorado"
+        ElseIf Mid(item, 17, 4) = "CONN" Then
+            cBoxStates.Text = "Connecticut"
+        ElseIf Mid(item, 17, 4) = "DELA" Then
+            cBoxStates.Text = "Delaware"
+        ElseIf Mid(item, 17, 4) = "FLOR" Then
+            cBoxStates.Text = "Florida"
+        ElseIf Mid(item, 17, 4) = "GEOR" Then
+            cBoxStates.Text = "Georgia"
+        ElseIf Mid(item, 17, 4) = "HAWA" Then
+            cBoxStates.Text = "Hawaii"
+        ElseIf Mid(item, 17, 4) = "IDAH" Then
+            cBoxStates.Text = "Idaho"
+        ElseIf Mid(item, 17, 4) = "ILLI" Then
+            cBoxStates.Text = "Illinois"
+        ElseIf Mid(item, 17, 4) = "INDI" Then
+            cBoxStates.Text = "Indiana"
+        ElseIf Mid(item, 17, 4) = "IOWA" Then
+            cBoxStates.Text = "Iowa"
+        ElseIf Mid(item, 17, 4) = "KANS" Then
+            cBoxStates.Text = "Kansas"
+        ElseIf Mid(item, 17, 4) = "KENT" Then
+            cBoxStates.Text = "Kentucky"
+        ElseIf Mid(item, 17, 4) = "LOUI" Then
+            cBoxStates.Text = "Louisiana"
+        ElseIf Mid(item, 17, 4) = "MAIN" Then
+            cBoxStates.Text = "Maine"
+        ElseIf Mid(item, 17, 4) = "MARY" Then
+            cBoxStates.Text = "Maryland"
+        ElseIf Mid(item, 17, 4) = "MASS" Then
+            cBoxStates.Text = "Massachusetts"
+        ElseIf Mid(item, 17, 4) = "MICH" Then
+            cBoxStates.Text = "Michigan"
+        ElseIf Mid(item, 17, 4) = "MINN" Then
+            cBoxStates.Text = "Minnesota"
+        ElseIf Mid(item, 17, 4) = "MISS" Then
+            cBoxStates.Text = "Mississippi"
+        ElseIf Mid(item, 17, 4) = "MISO" Then
+            cBoxStates.Text = "Missouri"
+        ElseIf Mid(item, 17, 4) = "MONT" Then
+            cBoxStates.Text = "Montana"
+        ElseIf Mid(item, 17, 4) = "NEBR" Then
+            cBoxStates.Text = "Nebraska"
+        ElseIf Mid(item, 17, 4) = "NEVA" Then
+            cBoxStates.Text = "Nevada"
+        ElseIf Mid(item, 17, 4) = "NEWH" Then
+            cBoxStates.Text = "New Hampshire"
+        ElseIf Mid(item, 17, 4) = "NEWJ" Then
+            cBoxStates.Text = "New Jersery"
+        ElseIf Mid(item, 17, 4) = "NEWM" Then
+            cBoxStates.Text = "New Mexico"
+        ElseIf Mid(item, 17, 4) = "MEWY" Then
+            cBoxStates.Text = "New York"
+        ElseIf Mid(item, 17, 4) = "NORT" Then
+            cBoxStates.Text = "North Carolina"
+        ElseIf Mid(item, 17, 4) = "NORD" Then
+            cBoxStates.Text = "Noth Dakota"
+        ElseIf Mid(item, 17, 4) = "OHIO" Then
+            cBoxStates.Text = "Ohio"
+        ElseIf Mid(item, 17, 4) = "OKLA" Then
+            cBoxStates.Text = "Oklahoma"
+        ElseIf Mid(item, 17, 4) = "OREG" Then
+            cBoxStates.Text = "Oregon"
+        ElseIf Mid(item, 17, 4) = "PENN" Then
+            cBoxStates.Text = "Pennsylvania"
+        ElseIf Mid(item, 17, 4) = "RHOD" Then
+            cBoxStates.Text = "Rhode Island"
+        ElseIf Mid(item, 17, 4) = "SOUT" Then
+            cBoxStates.Text = "South Carolina"
+        ElseIf Mid(item, 17, 4) = "SOUD" Then
+            cBoxStates.Text = "South Dakota"
+        ElseIf Mid(item, 17, 4) = "TENN" Then
+            cBoxStates.Text = "Tennessee"
+        ElseIf Mid(item, 17, 4) = "TEXA" Then
+            cBoxStates.Text = "Texas"
+        ElseIf Mid(item, 17, 4) = "UTAH" Then
+            cBoxStates.Text = "Utah"
+        ElseIf Mid(item, 17, 4) = "VERM" Then
+            cBoxStates.Text = "Vermont"
+        ElseIf Mid(item, 17, 4) = "VIRG" Then
+            cBoxStates.Text = "Virginia"
+        ElseIf Mid(item, 17, 4) = "WASH" Then
+            cBoxStates.Text = "Washington"
+        ElseIf Mid(item, 17, 4) = "WEST" Then
+            cBoxStates.Text = "West Virginia"
+        ElseIf Mid(item, 17, 4) = "WISC" Then
+            cBoxStates.Text = "Wisconsin"
+        ElseIf Mid(item, 17, 4) = "WYOM" Then
+            cBoxStates.Text = "Wyoming"
+        End If
+    End Sub
+
+    Private Sub btnChange_Click(sender As Object, e As EventArgs) Handles btnChange.Click
+        Dim item As String = lstProducts.SelectedItem
+        Dim i As Integer
+        Dim current As Integer
+        Dim IDNum As String
+
+        For i = 1 To wc
+            If item = arrIDNums(i) Then
+                current = i
+                Exit For
+            End If
+        Next i
+
+        'Type
+        If rBtnTraditional.Checked = True Then
+            IDNum = "T"
+        ElseIf rBtnMessenger.Checked = True Then
+            IDNum = "M"
+        Else
+            IDNum = "S"
+        End If
+        'Size
+        If rBtnSmall.Checked = True Then
+            IDNum += "S"
+        ElseIf rBtnMedium.Checked = True Then
+            IDNum += "M"
+        Else
+            IDNum += "L"
+        End If
+        'Color
+        If rBtnWhite.Checked = True Then
+            IDNum += "W"
+        ElseIf rBtnRed.Checked = True Then
+            IDNum += "R"
+        ElseIf rBtnBlack.Checked = True Then
+            IDNum += "B"
+        ElseIf rBtnBlue.Checked = True Then
+            IDNum += "L"
+        ElseIf rBtnGray.Checked = True Then
+            IDNum += "G"
+        ElseIf rBtnGreen.Checked = True Then
+            IDNum += "N"
+        End If
+        'Pattern
+        If rBtnStriped.Checked = True Then
+            IDNum += "S"
+        ElseIf rBtnPolka.Checked = True Then
+            IDNum += "P"
+        Else
+            IDNum += "C"
+        End If
+        'Features
+        If ckBoxInitials.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxBottle.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxStraps.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxLunchbox.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxHeadphone.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxCell.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxHandle.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        If ckBoxWheels.Checked = True Then
+            IDNum += "C"
+        Else
+            IDNum += "N"
+        End If
+        'Store
+        IDNum += UCase(Mid(cBoxStores.SelectedItem, 1, 2))
+        'Brand
+        IDNum += UCase(Mid(cBoxDesigner.SelectedItem, 1, 2))
+        'State
+        If cBoxStates.SelectedItem <> "Missouri" And cBoxStates.SelectedItem <> "North Dakota" And cBoxStates.SelectedItem <> "South Dakota" Then
+            IDNum += UCase(Mid(cBoxStates.SelectedItem, 1, 4))
+        ElseIf cBoxStates.SelectedItem = "Missouri" Then
+            IDNum += "MISO"
+        ElseIf cBoxStates.SelectedItem = "South Dakota" Then
+            IDNum += "SOUD"
+        Else
+            IDNum += "NORD"
+        End If
+
+        'Resaving
+        arrIDNums(current) = IDNum
+        lstProducts.Items.Clear()
+        For i = 1 To wc
+            lstProducts.Items.Add(arrIDNums(i))
+        Next
+    End Sub
+
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        Dim i As Integer = 0
+
+        FileOpen(1, path, OpenMode.Output)
+        For i = 1 To wc
+            PrintLine(1, arrIDNums(i))
+        Next i
+        FileClose(1)
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim i As Integer = 0
+
+        lstProducts.Items.Clear()
+        FileOpen(1, path, OpenMode.Input)
+        Do While Not EOF(1)
+            arrIDNums(i) = LineInput(1)
+            lstProducts.Items.Add(arrIDNums(i))
+            i += 1
+        Loop
+        FileClose(1)
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles picRedBP.Click
+
+    End Sub
+
+    Private Sub rBtnTraditional_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnTraditional.CheckedChanged
+        picRedBP.Visible = True
+        picBrownBP.Visible = False
+        picPinkBP.Visible = False
+    End Sub
+
+    Private Sub rBtnMessenger_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnMessenger.CheckedChanged
+        picRedBP.Visible = False
+        picBrownBP.Visible = True
+        picPinkBP.Visible = False
+    End Sub
+
+    Private Sub rBtnShoulder_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnShoulder.CheckedChanged
+        picRedBP.Visible = False
+        picBrownBP.Visible = False
+        picPinkBP.Visible = True
+    End Sub
+
+    Private Sub rBtnStriped_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnStriped.CheckedChanged
+        picStripe.Visible = True
+        picPolka.Visible = False
+        picCustom.Visible = False
+    End Sub
+
+    Private Sub picCustom_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnCustomized.CheckedChanged
+        picStripe.Visible = False
+        picPolka.Visible = False
+        picCustom.Visible = True
+    End Sub
+
+    Private Sub rBtnPolka_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnPolka.CheckedChanged
+        picStripe.Visible = False
+        picPolka.Visible = True
+        picCustom.Visible = False
+    End Sub
+
+    Private Sub ckBoxInitials_CheckedChanged(sender As Object, e As EventArgs) Handles ckBoxInitials.CheckedChanged
+        If ckBoxInitials.Checked = True Then
+            picInitials.Visible = True
+            picWheels.Visible = False
+            picLunchbox.Visible = False
+        End If
+    End Sub
+
+    Private Sub ckBoxLunchbox_CheckedChanged(sender As Object, e As EventArgs) Handles ckBoxLunchbox.CheckedChanged
+        If ckBoxLunchbox.Checked = True Then
+            picInitials.Visible = False
+            picWheels.Visible = False
+            picLunchbox.Visible = True
+        End If
+    End Sub
+
+    Private Sub ckBoxWheels_CheckedChanged(sender As Object, e As EventArgs) Handles ckBoxWheels.CheckedChanged
+        If ckBoxWheels.Checked = True Then
+            picInitials.Visible = False
+            picWheels.Visible = True
+            picLunchbox.Visible = False
+        End If
+    End Sub
+
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        lstProducts.Items.Clear()
+    End Sub
+End Class
